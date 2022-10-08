@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/logger-search/static/css/main.a07eefe3.css",
+    "main.js": "/logger-search/static/js/main.40a846af.js",
+    "index.html": "/logger-search/index.html",
+    "main.a07eefe3.css.map": "/logger-search/static/css/main.a07eefe3.css.map",
+    "main.40a846af.js.map": "/logger-search/static/js/main.40a846af.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a07eefe3.css",
+    "static/js/main.40a846af.js"
+  ]
+}
