@@ -4,8 +4,10 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import dayjs from 'dayjs';
+import axios from 'axios';
+import moment from 'moment';
 
-const SearchBar = ({ data }) => {
+const SearchBar = ({ data, URL }) => {
   const [value, setValue] = useState(dayjs());
   const [actionTypeOptions, setActionTypeOptions] = useState({});
   const [applicationType, setApplicationType] = useState({});
@@ -19,9 +21,6 @@ const SearchBar = ({ data }) => {
   });
 
 
-  useEffect(() => {
-    console.log(dataToFilter);
-  }, [dataToFilter]);
 
   useEffect(() => {
     let actionTypeValue = {};
@@ -43,21 +42,22 @@ const SearchBar = ({ data }) => {
     });
     setActionTypeOptions(actionTypeValue);
     setApplicationType(appType);
-
   }, [data]);
+
 
 
   const handelFilter = (e) => {
     console.log({ [e.target.name]: e.target.value, e });
+    console.log({ dataToFilter });
     if (e.target.name === 'actionType') {
-      console.log(e.target.value, actionTypeOptions);
+      console.log(e.target.value, actionTypeOptions, actionTypeOptions[e.target.value]);
+
       setDataToFilter({
         ...dataToFilter,
         [e.target.name]: { key: e.target.value, value: actionTypeOptions[e.target.value] },
       });
-    }
-    if (e.target.name === 'applicationType') {
-      console.log(e.target.value, applicationType);
+    } else if (e.target.name === 'applicationType') {
+      console.log(e.target.value, applicationType, applicationType[e.target.value]);
       setDataToFilter({
         ...dataToFilter,
         [e.target.name]: { key: e.target.value, value: applicationType[e.target.value] },
@@ -68,6 +68,12 @@ const SearchBar = ({ data }) => {
         [e.target.name]: e.target.value,
       });
     };
+  };
+
+  const ShowSearchResult = async (e) => {
+    e.preventDefault();
+    const req = await axios.get(`${URL}?employeeName=${dataToFilter.employeeName}&actionType=${dataToFilter.actionType.value}&applicationType=${dataToFilter.applicationType.value}&from=${dataToFilter.from}&to=${dataToFilter.to}&applicationId=${dataToFilter.applicationId}`);
+    console.log(req);
   };
 
   return (
@@ -95,8 +101,13 @@ const SearchBar = ({ data }) => {
           size='small'
           sx={{ minWidth: 190 }}
           renderInput={(params) => <TextField {...params} />}
-          onChange={handelFilter}
+          onChange={(e, val) => {
+            console.log({ val });
+            handelFilter({ target: { name: 'actionType', value: val } });
+          }}
           value={dataToFilter.actionType.key}
+          isOptionEqualToValue={(option, value) => option === dataToFilter.actionType.key}
+
         />
       </Grid>
       <Grid item alignSelf='center'>
@@ -105,12 +116,17 @@ const SearchBar = ({ data }) => {
           name='applicationType'
           disablePortal
           options={Object.keys(applicationType)}
-          id="combo-box-demo"
+          id="combo-box-demo-2"
           size='small'
           sx={{ minWidth: 190 }}
           renderInput={(params) => <TextField {...params} />}
-          onChange={handelFilter}
+          onChange={(e, val) => {
+            console.log({ val });
+            handelFilter({ target: { name: 'applicationType', value: val } });
+          }}
           value={dataToFilter.applicationType.key}
+          isOptionEqualToValue={(option, value) => option === dataToFilter.applicationType.key}
+
         />
       </Grid>
       <Grid item alignSelf='center' width='normal'>
@@ -122,9 +138,8 @@ const SearchBar = ({ data }) => {
                 name='from'
                 value={dataToFilter.from}
                 onChange={(newValue) => {
-                  setValue(newValue);
                   handelFilter(
-                    { target: { name: 'from', value: newValue } }
+                    { target: { name: 'from', value: moment(newValue).format('DD-MM-YYYY hh:mm:ss') } }
                   );
                 }}
                 renderInput={(params) => <TextField {...params} size='small' placeholder='select date' />}
@@ -139,7 +154,7 @@ const SearchBar = ({ data }) => {
                 onChange={(newValue) => {
                   setValue(newValue);
                   handelFilter(
-                    { target: { name: 'to', value: newValue } }
+                    { target: { name: 'to', value: moment(newValue).format('DD-MM-YYYY hh:mm:ss') } }
                   );
                 }}
                 renderInput={(params) => <TextField {...params} size='small' />}
@@ -163,7 +178,7 @@ const SearchBar = ({ data }) => {
         />
       </Grid>
       <Grid item alignSelf='end' sx={{ mb: '2px' }}>
-        <Button fullWidth variant='contained' color='primary' size="large" sx={{ fontSize: '10px', whiteSpace: 'nowrap', height: '100%', paddingTop: '.66rem', paddingBottom: '.66rem' }} >Search Logger</Button>
+        <Button fullWidth variant='contained' color='primary' size="large" sx={{ fontSize: '10px', whiteSpace: 'nowrap', height: '100%', paddingTop: '.66rem', paddingBottom: '.66rem' }} onClick={ShowSearchResult}>Search Logger</Button>
       </Grid>
     </Grid >
   );
