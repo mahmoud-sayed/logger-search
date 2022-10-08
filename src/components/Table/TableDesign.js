@@ -3,30 +3,126 @@ import axios from 'axios';
 
 //MUI Imports
 import PropTypes from 'prop-types';
-import Box from '@mui/material/Box';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import TableSortLabel from '@mui/material/TableSortLabel';
-import Paper from '@mui/material/Paper';
 import { visuallyHidden } from '@mui/utils';
+import { Grid, Stack, TableSortLabel, TableRow, Paper, Pagination, TablePagination, TableHead, TableContainer, TableCell, TableBody, Table, Box } from '@mui/material';
+import SearchBar from '../Searcbar/SearchBar';
+//import SearchBar from "material-ui-search-bar";
 
+
+
+
+// This method is created for cross-browser compatibility, if you don't
+// need to support IE11, you can use Array.prototype.sort() directly
+function stableSort(array, comparator) {
+  const stabilizedThis = array.map((el, index) => [el, index]);
+  stabilizedThis.sort((a, b) => {
+    const order = comparator(a[0], b[0]);
+    if (order !== 0) {
+      return order;
+    }
+    return a[1] - b[1];
+  });
+  return stabilizedThis.map((el) => el[0]);
+}
+
+
+const headCells = [
+  {
+    id: 'Log ID',
+    numeric: false,
+    disablePadding: false,
+    label: 'Log ID',
+  },
+  {
+    id: 'Application Type',
+    numeric: false,
+    disablePadding: false,
+    label: 'Application Type',
+  },
+  {
+    id: 'Application',
+    numeric: false,
+    disablePadding: false,
+    label: 'Application ID',
+  },
+  {
+    id: 'Action',
+    numeric: false,
+    disablePadding: false,
+    label: 'Action',
+  },
+  {
+    id: 'Action Details',
+    numeric: false,
+    disablePadding: false,
+    label: 'Action Details',
+  },
+  {
+    id: 'Date:Time',
+    numeric: false,
+    disablePadding: false,
+    label: 'Action',
+  },
+];
+
+function EnhancedTableHead(props) {
+  const { order, orderBy, onRequestSort } = props;
+
+
+  const createSortHandler = (property) => (event) => {
+    onRequestSort(event, property);
+  };
+
+  return (
+    <TableHead>
+      <TableRow>
+        {headCells.map((headCell) => (
+          <TableCell
+            key={headCell.id}
+            align={headCell.numeric ? 'right' : 'left'}
+            padding={headCell.disablePadding ? 'none' : 'normal'}
+            sortDirection={orderBy === headCell.id ? order : false}
+
+          >
+            <TableSortLabel
+              active={orderBy === headCell.id}
+              direction={orderBy === headCell.id ? order : 'asc'}
+              onClick={createSortHandler(headCell.id)}
+            >
+              {headCell.label}
+              {orderBy === headCell.id ? (
+                <Box component="span" sx={visuallyHidden}>
+                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                </Box>
+              ) : null}
+            </TableSortLabel>
+          </TableCell>
+        ))}
+      </TableRow>
+    </TableHead>
+  );
+}
+
+EnhancedTableHead.propTypes = {
+  onRequestSort: PropTypes.func.isRequired,
+  order: PropTypes.oneOf(['asc', 'desc']).isRequired,
+  orderBy: PropTypes.string.isRequired,
+  rowCount: PropTypes.number.isRequired,
+};
 
 const TableDesign = () => {
   const [data, setData] = useState([]); // fetched data From server
   const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('calories');
-  const [selected, setSelected] = useState([]);
+  const [orderBy, setOrderBy] = useState('logId');
   const [page, setPage] = useState(0);
+  const [searchResult, setSearchResult] = useState();
+  const [searched, setSearched] = useState("");
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
 
   const URL = 'https://run.mocky.io/v3/a2fbc23e-069e-4ba5-954c-cd910986f40f'; // Data URL
 
+  // fetching data
   useEffect(() => {
     try {
 
@@ -44,8 +140,15 @@ const TableDesign = () => {
 
   }, []);
 
-
+  //here we set the data to 
   const rows = data;
+
+
+  function getComparator(order, orderBy) {
+    return order === 'desc'
+      ? (a, b) => descendingComparator(a, b, orderBy)
+      : (a, b) => -descendingComparator(a, b, orderBy);
+  }
 
   function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -57,116 +160,6 @@ const TableDesign = () => {
     return 0;
   }
 
-  function getComparator(order, orderBy) {
-    return order === 'desc'
-      ? (a, b) => descendingComparator(a, b, orderBy)
-      : (a, b) => -descendingComparator(a, b, orderBy);
-  }
-
-  // This method is created for cross-browser compatibility, if you don't
-  // need to support IE11, you can use Array.prototype.sort() directly
-  function stableSort(array, comparator) {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-      const order = comparator(a[0], b[0]);
-      if (order !== 0) {
-        return order;
-      }
-      return a[1] - b[1];
-    });
-    return stabilizedThis.map((el) => el[0]);
-  }
-
-
-  const headCells = [
-    {
-      id: 'Log ID',
-      numeric: false,
-      disablePadding: false,
-      label: 'Log ID',
-    },
-    {
-      id: 'Application Type',
-      numeric: false,
-      disablePadding: false,
-      label: 'Application Type',
-    },
-    {
-      id: 'Application',
-      numeric: false,
-      disablePadding: false,
-      label: 'Application ID',
-    },
-    {
-      id: 'carbs',
-      numeric: false,
-      disablePadding: false,
-      label: 'Carbs (g)',
-    },
-    {
-      id: 'Action',
-      numeric: false,
-      disablePadding: false,
-      label: 'Action',
-    },
-    {
-      id: 'Action Details',
-      numeric: false,
-      disablePadding: false,
-      label: 'Action Details',
-    },
-    {
-      id: 'Date:Time',
-      numeric: false,
-      disablePadding: false,
-      label: 'Action',
-    },
-  ];
-
-  function EnhancedTableHead(props) {
-    const { order, orderBy, onRequestSort } =
-      props;
-    const createSortHandler = (property) => (event) => {
-      onRequestSort(event, property);
-    };
-
-    return (
-      <TableHead>
-        <TableRow>
-          {headCells.map((headCell) => (
-            <TableCell
-              key={headCell.id}
-              align={headCell.numeric ? 'right' : 'left'}
-              padding={headCell.disablePadding ? 'none' : 'normal'}
-              sortDirection={orderBy === headCell.id ? order : false}
-            >
-              <TableSortLabel
-                active={orderBy === headCell.id}
-                direction={orderBy === headCell.id ? order : 'asc'}
-                onClick={createSortHandler(headCell.id)}
-              >
-                {headCell.label}
-                {orderBy === headCell.id ? (
-                  <Box component="span" sx={visuallyHidden}>
-                    {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                  </Box>
-                ) : null}
-              </TableSortLabel>
-            </TableCell>
-          ))}
-        </TableRow>
-      </TableHead>
-    );
-  }
-
-  EnhancedTableHead.propTypes = {
-    numSelected: PropTypes.number.isRequired,
-    onRequestSort: PropTypes.func.isRequired,
-    onSelectAllClick: PropTypes.func.isRequired,
-    order: PropTypes.oneOf(['asc', 'desc']).isRequired,
-    orderBy: PropTypes.string.isRequired,
-    rowCount: PropTypes.number.isRequired,
-  };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -174,125 +167,99 @@ const TableDesign = () => {
     setOrderBy(property);
   };
 
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelected = rows.map((n) => n.name);
-      setSelected(newSelected);
-      return;
-    }
-    setSelected([]);
-  };
-
-
-
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-
-    setSelected(newSelected);
-  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = () => {
-    setRowsPerPage(parseInt(10));
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
 
+  const requestSearch = (searchedVal) => {
+    const filteredRows = rows.filter((row) => {
+      return row.Name.toLowerCase().includes(searchedVal.toLowerCase());
+    });
+    setSearchResult(filteredRows);
+  };
 
-  const isSelected = (name) => selected.indexOf(name) !== -1;
+  const cancelSearch = () => {
+    setSearched("");
+    requestSearch(searched);
 
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+  };
+
+
+
+
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Paper sx={{ width: '100%', mb: 2 }}>
-        <TableContainer>
-          <Table
-            sx={{ minWidth: 750, paddingLeft: '10px' }}
-            aria-labelledby="tableTitle"
-            size={'medium'}
+    <Box sx={{ width: '100%', marginBottom: '1rem' }}>
+      <Grid width='100%' container spacing={2}>
+        <SearchBar data={data} />
+        <Grid width='100%' item>
+          <Paper sx={{ width: '100%', mb: 2 }} elevation={3}>
+            <TableContainer>
+              <Table
+                sx={{ minWidth: 750, paddingLeft: '10px' }}
+                aria-labelledby="tableTitle"
+                size={'medium'}
+              >
+                <EnhancedTableHead
 
-          >
-            <EnhancedTableHead
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
-              onRequestSort={handleRequestSort}
-              rowCount={rows.length}
-            />
-            <TableBody>
-              {/* if you don't need to support IE11, you can replace the `stableSort` call with:
-               rows.slice().sort(getComparator(order, orderBy)) */}
-              {stableSort(rows, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
-                  const labelId = `enhanced-table-checkbox-${index}`;
+                  order={order}
+                  orderBy={orderBy}
+                  onRequestSort={handleRequestSort}
+                  rowCount={rows.length}
+                />
+                <TableBody>
+                  {stableSort(rows, getComparator(order, orderBy))
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row, index) => {
+                      const labelId = `enhanced-table-checkbox-${index}`;
 
-                  return (
-                    <TableRow
-                      hover
-                      onClick={(event) => handleClick(event, row.name)}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.name}
-                      selected={isItemSelected}
-                    >
+                      return (
+                        <TableRow hover key={row.logId} sx={{ fontSize: '10px' }}>
+                          <TableCell
+                            sx={{ fontSize: '12px' }}
+                            component="th" id={labelId}
+                            scope="row" padding="normal"
+                          >
+                            {row.logId}
+                          </TableCell>
+                          <TableCell
+                            sx={{ fontSize: '12px' }}
+                            align="left"
+                          >
+                            {row.applicationType?.replaceAll('_', ' ')}
+                          </TableCell>
+                          <TableCell sx={{ fontSize: '12px' }} align="left">{row.applicationId}</TableCell>
+                          <TableCell sx={{ fontSize: '12px' }} align="left">{row.actionType?.replaceAll('_', ' ')}</TableCell>
+                          <TableCell sx={{ fontSize: '12px', }} align="left">{!row.actionDetails ? '-/-' : row.actionDetails}</TableCell>
+                          <TableCell sx={{ fontSize: '12px' }} align="left">{row.creationTimestamp?.replaceAll(' ', ' / ')}</TableCell>
+                        </TableRow>
+                      );
+                    })}
 
-                      <TableCell component="th" id={labelId} scope="row" padding="none">
-                        {row.logId}
-                      </TableCell>
-                      <TableCell align="right">{row.calories}</TableCell>
-                      <TableCell align="right">{row.applicationType}</TableCell>
-                      <TableCell align="right">{row.applicationId}</TableCell>
-                      <TableCell align="right">{row.actionType}</TableCell>
-                      <TableCell align="right">{row.protein}</TableCell>
-                      <TableCell align="right">{row.creationTimestamp}</TableCell>
-                    </TableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow
-                  style={{
-                    height: (53) * emptyRows,
-                  }}
-                >
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={10}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Paper>
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <Stack alignItems='center'>
+              <Pagination count={10} shape="rounded" sx={{ padding: '1rem 0' }} />
+              <TablePagination
+                rowsPerPageOptions={[10]}
+                component="div"
+                count={rows.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
+            </Stack>
+          </Paper>
+        </Grid>
+      </Grid>
     </Box>
   );
 };
