@@ -28,40 +28,40 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: 'Log ID',
+    id: 'logId',
     numeric: false,
     disablePadding: false,
     label: 'Log ID',
   },
   {
-    id: 'Application Type',
+    id: 'applicationType',
     numeric: false,
     disablePadding: false,
     label: 'Application Type',
   },
   {
-    id: 'Application',
+    id: 'applicationId',
     numeric: false,
     disablePadding: false,
     label: 'Application ID',
   },
   {
-    id: 'Action',
+    id: 'actionType',
     numeric: false,
     disablePadding: false,
     label: 'Action',
   },
   {
-    id: 'Action Details',
+    id: 'actionDetails',
     numeric: false,
     disablePadding: false,
     label: 'Action Details',
   },
   {
-    id: 'Date:Time',
+    id: 'creationTimestamp',
     numeric: false,
     disablePadding: false,
-    label: 'Action',
+    label: 'Date:Time',
   },
 ];
 
@@ -85,9 +85,11 @@ function EnhancedTableHead(props) {
 
           >
             <TableSortLabel
-              active={orderBy === headCell.id}
+              active={true}
               direction={orderBy === headCell.id ? order : 'asc'}
               onClick={createSortHandler(headCell.id)}
+              sx={{ '& .MuiTableSortLabel-icon': { fill: '#1565C0', backgroundColor: '#1565C020', borderRadius: '50%' } }}
+
             >
               {headCell.label}
               {orderBy === headCell.id ? (
@@ -110,6 +112,14 @@ EnhancedTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired,
 };
 
+const calculateNumberPages = (totalNumberItems, numberItemsInPage = 10) => {
+  var numberPages = Math.floor(totalNumberItems / numberItemsInPage);
+  if (totalNumberItems % numberItemsInPage !== 0) {
+    numberPages += 1;
+  }
+  return numberPages;
+};
+
 const TableDesign = () => {
   const [data, setData] = useState([]); // fetched data From server
   const [order, setOrder] = useState('asc');
@@ -118,8 +128,8 @@ const TableDesign = () => {
   const [searchResult, setSearchResult] = useState();
   const [searched, setSearched] = useState("");
   const [rowsPerPage, setRowsPerPage] = useState(10);
-
-
+  const [pageNum, setPageNum] = useState(1);
+  console.log(pageNum);
   const URL = 'https://run.mocky.io/v3/a2fbc23e-069e-4ba5-954c-cd910986f40f'; // Data URL
 
   // fetching data
@@ -172,8 +182,8 @@ const TableDesign = () => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
+  const handleChangeRowsPerPage = () => {
+    setRowsPerPage(parseInt(10));
     setPage(0);
   };
 
@@ -188,6 +198,14 @@ const TableDesign = () => {
     setSearched("");
     requestSearch(searched);
 
+  };
+
+
+
+
+
+  const handlePaginationChange = (event, page) => {
+    setPageNum(page);
   };
 
 
@@ -215,7 +233,7 @@ const TableDesign = () => {
                 />
                 <TableBody>
                   {stableSort(rows, getComparator(order, orderBy))
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .slice((pageNum - 1) * rowsPerPage, pageNum * rowsPerPage)
                     .map((row, index) => {
                       const labelId = `enhanced-table-checkbox-${index}`;
 
@@ -246,15 +264,14 @@ const TableDesign = () => {
               </Table>
             </TableContainer>
             <Stack alignItems='center'>
-              <Pagination count={10} shape="rounded" sx={{ padding: '1rem 0' }} />
-              <TablePagination
-                rowsPerPageOptions={[10]}
-                component="div"
-                count={rows.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
+              <Pagination
+                count={calculateNumberPages(rows?.length || 0, rowsPerPage)}
+                onChange={handlePaginationChange}
+                siblingCount={0}
+                shape="rounded"
+                sx={{ padding: '1rem 0' }}
+                hidePrevButton={pageNum === 1 ? true : false}
+                hideNextButton={pageNum === rows.length / rowsPerPage ? true : false}
               />
             </Stack>
           </Paper>
@@ -265,3 +282,7 @@ const TableDesign = () => {
 };
 
 export default TableDesign;
+
+
+
+
