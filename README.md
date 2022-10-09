@@ -1,73 +1,81 @@
 # Logger Search Task
 
 here is project result
+![Semantic description of image](./assets/Screenshot%202022-10-09%20131349.png)*Logger search Page*
+
+![Semantic description of image](./assets/Screenshot%202022-10-09%20130631.png)
+*Logger search tap Icon*
 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
-
+---
 In the project directory, you can run:
 
 ### `npm start`
+for project start in local host
 
-Runs the app in the development mode.\
+### `npm run deploy`
+for project deployment
+
+
+## Logger Search built with
+---
+- ReactJS [Create React App](https://github.com/facebook/create-react-app).
+
+- MUI5 [MUI5 Documentation](https://mui.com/)
+
+- axios [axios Documentation](https://axios-http.com/docs/intro)
+
+- dayjs [dayjs Documentation](https://day.js.org/)
+
+- moment [moment Documentation](https://momentjs.com/)
+
+
+## Project Hosts
+---
+
+- Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Runs the app on the host.\
+Open [https://mahmoud-sayed.github.io/logger-search](https://mahmoud-sayed.github.io/logger-search) to view it online in your browser.
 
-### `npm test`
+## how the task done
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- I used the following endpoint directly : https://run.mocky.io/v3/a2fbc23e-069e-4ba5-954c-cd910986f40f
+#
+-  Results displayed in a table
+    - Log ID
+    - Application Type
+    - Application ID
+    - Action
+    - Action Details
+    - Date : Time
+#
+- Pagination :\
+Display 10 records per page
+Use client side pagination : done
+#
+- sorting:\
+user can sort in all the columns
+#
+- filtering : user can filter on 
+    - Employee Name
+    - Action type
+    - Application type
+    - From Date
+    - Select date
+    - To Date
+    - Application ID
+#
+- project built with ES6
+- Synch between current search fields the URL : done
 
-### `npm run build`
+- project Deployed to Github pages : [Github pages](https://github.com/gitname/react-gh-pages)
+#
+## Important note
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### about the test I can't make test on my code currently but I'm planing to learn Jet wethin next 2 mothes
