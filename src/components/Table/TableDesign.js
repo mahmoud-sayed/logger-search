@@ -93,7 +93,7 @@ const TableDesign = () => {
   return (
     <Box sx={{ width: '100%', marginBottom: '1rem' }}>
       <Grid width='100%' container spacing={2}>
-        <SearchBar data={rows} URL={URL} />
+        <SearchBar data={rows} URL={URL} setRows={setRows} />
         <Grid width='100%' item>
           <Paper sx={{ width: '100%', mb: 2 }} elevation={3}>
             <TableContainer>

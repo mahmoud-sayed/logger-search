@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
 import axios from 'axios';
 import moment from 'moment';
 
-const SearchBar = ({ data, URL }) => {
+const SearchBar = ({ data, URL, setRows }) => {
   const [value, setValue] = useState(dayjs());
   const [actionTypeOptions, setActionTypeOptions] = useState({});
   const [applicationType, setApplicationType] = useState({});
@@ -72,8 +72,11 @@ const SearchBar = ({ data, URL }) => {
 
   const ShowSearchResult = async (e) => {
     e.preventDefault();
+
     const req = await axios.get(`${URL}?employeeName=${dataToFilter.employeeName}&actionType=${dataToFilter.actionType.value}&applicationType=${dataToFilter.applicationType.value}&from=${dataToFilter.from}&to=${dataToFilter.to}&applicationId=${dataToFilter.applicationId}`);
     console.log(req);
+
+    setRows(req.data.result.auditLog);
   };
 
   return (
