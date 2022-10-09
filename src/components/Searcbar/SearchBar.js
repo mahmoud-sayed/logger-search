@@ -157,7 +157,7 @@ const SearchBar = ({ data, URL }) => {
                     { target: { name: 'to', value: moment(newValue).format('DD-MM-YYYY hh:mm:ss') } }
                   );
                 }}
-                renderInput={(params) => <TextField {...params} size='small' />}
+                renderInput={(params) => <TextField {...params} size='small' placeholder='select date' />}
 
               />
             </Grid>
