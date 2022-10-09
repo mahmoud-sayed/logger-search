@@ -40,7 +40,6 @@ const TableDesign = () => {
 
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [pageNum, setPageNum] = useState(1);
-  console.log(pageNum);
   const URL = 'https://run.mocky.io/v3/a2fbc23e-069e-4ba5-954c-cd910986f40f'; // Data URL
 
   // fetching data

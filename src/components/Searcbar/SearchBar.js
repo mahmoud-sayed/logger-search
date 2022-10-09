@@ -47,17 +47,12 @@ const SearchBar = ({ data, URL, setRows }) => {
 
 
   const handelFilter = (e) => {
-    console.log({ [e.target.name]: e.target.value, e });
-    console.log({ dataToFilter });
     if (e.target.name === 'actionType') {
-      console.log(e.target.value, actionTypeOptions, actionTypeOptions[e.target.value]);
-
       setDataToFilter({
         ...dataToFilter,
         [e.target.name]: { key: e.target.value, value: actionTypeOptions[e.target.value] },
       });
     } else if (e.target.name === 'applicationType') {
-      console.log(e.target.value, applicationType, applicationType[e.target.value]);
       setDataToFilter({
         ...dataToFilter,
         [e.target.name]: { key: e.target.value, value: applicationType[e.target.value] },
@@ -74,7 +69,6 @@ const SearchBar = ({ data, URL, setRows }) => {
     e.preventDefault();
 
     const req = await axios.get(`${URL}?employeeName=${dataToFilter.employeeName}&actionType=${dataToFilter.actionType.value}&applicationType=${dataToFilter.applicationType.value}&from=${dataToFilter.from}&to=${dataToFilter.to}&applicationId=${dataToFilter.applicationId}`);
-    console.log(req);
 
     setRows(req.data.result.auditLog);
   };
@@ -105,7 +99,6 @@ const SearchBar = ({ data, URL, setRows }) => {
           sx={{ minWidth: 190 }}
           renderInput={(params) => <TextField {...params} />}
           onChange={(e, val) => {
-            console.log({ val });
             handelFilter({ target: { name: 'actionType', value: val } });
           }}
           value={dataToFilter.actionType.key}
@@ -124,7 +117,6 @@ const SearchBar = ({ data, URL, setRows }) => {
           sx={{ minWidth: 190 }}
           renderInput={(params) => <TextField {...params} />}
           onChange={(e, val) => {
-            console.log({ val });
             handelFilter({ target: { name: 'applicationType', value: val } });
           }}
           value={dataToFilter.applicationType.key}
