@@ -9,7 +9,7 @@ here is project result
 
 
 ## Available Scripts
----
+
 In the project directory, you can run:
 
 ### `npm start`
@@ -20,7 +20,7 @@ for project deployment
 
 
 ## Logger Search built with
----
+
 - ReactJS [Create React App](https://github.com/facebook/create-react-app).
 
 - MUI5 [MUI5 Documentation](https://mui.com/)
@@ -42,10 +42,10 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 Open [https://mahmoud-sayed.github.io/logger-search](https://mahmoud-sayed.github.io/logger-search) to view it online in your browser.
 
 ## how the task done
----
+
 
 - I used the following endpoint directly : https://run.mocky.io/v3/a2fbc23e-069e-4ba5-954c-cd910986f40f
-#
+
 -  Results displayed in a table
     - Log ID
     - Application Type
@@ -53,14 +53,14 @@ Open [https://mahmoud-sayed.github.io/logger-search](https://mahmoud-sayed.githu
     - Action
     - Action Details
     - Date : Time
-#
+
 - Pagination :\
 Display 10 records per page
 Use client side pagination : done
-#
+
 - sorting:\
 user can sort in all the columns
-#
+
 - filtering : user can filter on 
     - Employee Name
     - Action type
@@ -69,12 +69,12 @@ user can sort in all the columns
     - Select date
     - To Date
     - Application ID
-#
+
 - project built with ES6
 - Synch between current search fields the URL : done
 
 - project Deployed to Github pages : [Github pages](https://github.com/gitname/react-gh-pages)
-#
+
 - for search test you can do nest
     - click : ( ctrl + shift + j )
     - Browser console will open
@@ -84,12 +84,11 @@ user can sort in all the columns
     - click on submit button
     - look at the last added file in the network and you wil see the Headers ( 200 ) success
     - in the Preview you will see data located in result
-#
+
 ## Important note
----
 
 ### About the code test I can't make test on my code currently, but I'm planning to learn Jest within next 2 months
 
-#
-#
+
+
 # wish you all the best (:
