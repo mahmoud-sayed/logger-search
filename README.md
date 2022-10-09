@@ -75,20 +75,5 @@ user can sort in all the columns
 
 - project Deployed to Github pages : [Github pages](https://github.com/gitname/react-gh-pages)
 
-- for search test you can do nest
-    - click : ( ctrl + shift + j )
-    - Browser console will open
-    - from the top par open ( Network )
-    - click on ( Fetch/XHR)
-    - fell the search inputs in the proser 
-    - click on submit button
-    - look at the last added file in the network and you wil see the Headers ( 200 ) success
-    - in the Preview you will see data located in result
-
-## Important note
-
-### About the code test I can't make test on my code currently, but I'm planning to learn Jest within next 2 months
-
-
 
 # wish you all the best (:
