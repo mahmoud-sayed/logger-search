@@ -40,6 +40,8 @@ const TableDesign = () => {
 
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [pageNum, setPageNum] = useState(1);
+  const [dataAfterCheck, setDataAfterCheck] = useState([]);
+  console.log({ dataAfterCheck });
   const URL = 'https://run.mocky.io/v3/a2fbc23e-069e-4ba5-954c-cd910986f40f'; // Data URL
 
   // fetching data
@@ -92,7 +94,7 @@ const TableDesign = () => {
   return (
     <Box sx={{ width: '100%', marginBottom: '1rem' }}>
       <Grid width='100%' container spacing={2}>
-        <SearchBar data={rows} URL={URL} setRows={setRows} />
+        <SearchBar data={rows} URL={URL} setRows={setRows} setDataAfterCheck={setDataAfterCheck} />
         <Grid width='100%' item>
           <Paper sx={{ width: '100%', mb: 2 }} elevation={3}>
             <TableContainer>
@@ -109,7 +111,7 @@ const TableDesign = () => {
                   rowCount={rows.length}
                 />
                 <TableBody>
-                  {stableSort(rows, getComparator(order, orderBy))
+                  {stableSort(dataAfterCheck.length > 0 ? dataAfterCheck : rows, getComparator(order, orderBy))
                     .slice((pageNum - 1) * rowsPerPage, pageNum * rowsPerPage)
                     .map((row, index) => {
                       const labelId = `enhanced-table-checkbox-${index}`;
@@ -142,13 +144,13 @@ const TableDesign = () => {
             </TableContainer>
             <Stack alignItems='center'>
               <Pagination
-                count={calculateNumberPages(rows?.length || 0, rowsPerPage)}
+                count={calculateNumberPages((dataAfterCheck.length > 0 ? dataAfterCheck : rows)?.length || 0, rowsPerPage)}
                 onChange={handlePaginationChange}
                 siblingCount={0}
                 shape="rounded"
                 sx={{ padding: '1rem 0' }}
                 hidePrevButton={pageNum === 1 ? true : false}
-                hideNextButton={pageNum === rows.length / rowsPerPage ? true : false}
+                hideNextButton={pageNum === (dataAfterCheck.length > 0 ? dataAfterCheck : rows).length / rowsPerPage ? true : false}
               />
             </Stack>
           </Paper>
